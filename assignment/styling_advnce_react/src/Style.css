@@ -644,7 +644,6 @@
 } 
 .section7 .image{
     background-image: url(img/img/b2.jpg);
-
     background-attachment: fixed;
     height: 440px;
     /* filter: brightness(70%); */

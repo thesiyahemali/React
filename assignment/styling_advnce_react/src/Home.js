@@ -16,6 +16,7 @@ import img13 from './img/img13.jpg'
 import img14 from './img/img14.jpg'
 import img15 from './img/img15.jpg'
 import img16 from './img/img/b2.jpg'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
   return (
@@ -48,8 +49,8 @@ const Home = () => {
       <div class="right">
         <ul>
           <li><a href="" class="hom">Home</a></li>
-          <li><a href="about.html" class="abo">About</a></li>
-          <li><a href="" class="con">Conact</a></li>
+          <li><Link to={'/about'} class="abo">About</Link></li>
+          <li><Link to={'/contact'} class="con">Conact</Link></li>
         </ul>
       </div>
     </div>
