@@ -1,24 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
+import UseRef_Hook from './Hooks/UseRef_Hook.JS';
+import Create_use_hook_01 from './Hooks/Create_use_hook_01';
+import Lifecycle_Comopnent from './Hooks/Class_Lifecycle/Lifecycle_Comopnent';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      
+      <UseRef_Hook/>
+
+      <Create_use_hook_01/>
+
+      <Lifecycle_Comopnent/>
+    </>
   );
 }
 

@@ -8,10 +8,12 @@ import Contact from './Contact';
 function App() {
   return (
    <>
-    <Home/>    
+        <Home/>
     <Routes>
-      <Route path='about' element={<About/>}></Route>
-      <Route path='contact' element={<Contact/>}></Route>
+    {/* <Route path='/' element={<Home/>}></Route> */}
+
+      <Route path='/about' element={<About/>}></Route>
+      <Route path='/contact' element={<Contact/>}></Route>
 
     </Routes>
    </>
