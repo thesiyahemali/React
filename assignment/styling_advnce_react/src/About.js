@@ -5,6 +5,7 @@ const About = () => {
   return (
     <>
       <p>hii am about </p>
+     
     </>
   )
 }
