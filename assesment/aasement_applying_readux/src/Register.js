@@ -1,150 +1,166 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import './Register.css'
-import { ToastContainer, toast, Bounce } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-const Register = () => {
-  const [regError, setregError] = useState({})
-  const [regisdata, setregisdata] = useState({
-    email: '',
+import { Navigate } from 'react-router-dom';
+
+const SignUpForm = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    city: '',
+    gender: '',
     password: '',
-    Retype_password: '',
-    First_Name: '',
-    last_Name: '',
-    phone_number: '',
-    address: '',
-    town: '',
-    region: '',
-    postcode_zip: '',
-    country: 'united kingdown'
-  })
+    confirmPassword: '',
+    hobbies: '',
+    phoneNumber: '',
+    image: null,
+  });
 
+  const [errors, setErrors] = useState({});
+  const [preview, setPreview] = useState(null);
 
-  const regichange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setregisdata({ ...regisdata, [name]: value })
-  }
-  const registersubmit = (e) => {
-    e.preventDefault()
-    console.log(regisdata);
-    var re = /^\S+@\S+\.\S+$/
-    let reg = /(?=.*?[0-9])/
-    const phoneRegex = /^\d{10}$/;
-    const pincodeRegex = /^\d{6}$/;
-    let validateregister = {};
-    if (regisdata.email == '' || re.test(regisdata.email) == false) {
-      validateregister.email = 'please enter a valid email'
-    }
-    if (regisdata.password == '' || reg.test(regisdata.password) == false) {
-      validateregister.password = 'please enter a valid password'
-    }
-    if(regisdata.Retype_password !== regisdata.password || regisdata.Retype_password==''){
-      validateregister.Retype_password='please enter valide confirm password'
-    }
-    if(regisdata.First_Name == ''){
-       validateregister.First_Name = 'please enter first name'
-    }
-    if(regisdata.last_Name == ''){
-      validateregister.last_Name='please enter Last name'
-    }
-    if(regisdata.phone_number== '' ||  phoneRegex.test(regisdata.phone_number)==false){
-      validateregister.phone_number='please enter a valid phone number'
-    }
-    if(regisdata.address == ''){
-      validateregister.address='please enter valide address'
-    }
-    if(regisdata.town == ''){
-      validateregister.town='please enter valide town'
-    }
-    if(regisdata.region == ''){
-      validateregister.region='please enter valide region'
-    }
-    if(regisdata.postcode_zip == '' ||  pincodeRegex .test(regisdata.postcode_zip)==false){
-      validateregister.postcode_zip='please enter a valid postcode_zip'
-    }
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-    setregError(validateregister)
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({
+      ...formData,
+      image: file,
+    });
+  };
 
-    if (Object.keys(validateregister).length == 0) {
-      toast.success('🦄 Register successful!', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      }); 
+  const validate = () => {
+    let errors = {};
+    if (!formData.name) errors.name = 'Enter valide name';
+    if (!formData.city) errors.city = 'Enter valide';
+    if (!formData.gender) errors.gender = 'Gender is required';
+    if (!formData.password) errors.password = 'Password is required';
+    if (formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = 'Passwords do not match';
     }
-  }
+    if (!formData.phoneNumber) {
+      errors.phoneNumber = 'Phone number is required';
+    } else if (!/^\d{10}$/.test(formData.phoneNumber)) {
+      errors.phoneNumber = 'Phone number is invalid';
+    }
+    if (!formData.image) errors.image = 'Image is required';
+    return errors;
+  };
+
+  const handleSub= (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length === 0) {
+      console.log('Form data submitted:', formData);
+    Navigate('/Login');
+    }else{
+      console.log("validtion error:",validationErrors);
+    }
+  };
+
   return (
-    <>
-     <ToastContainer/>
-      <div className='main' >
-        <p className='regis'>Register here</p>
-        <p className='userre'>USER REGISTRATION</p>
-        <span><p className="fileds"> Fields marked * are required </p></span>
-        <br />
-        <form action="" onSubmit={registersubmit}>
-          <label className='email' id=''>Email*</label>
-
-          <input onChange={regichange} type='text' name='email' id='email' placeholder='Enter your email' />
-          {regError.email && (<span style={{ color: 'red' }}>{regError.email}</span>)}
-          <br />
-          <label className='password' id=''>Password*</label>
-          <input onChange={regichange} type='password' name='password' id='password' placeholder='Enter your password' />
-          {regError.password && (<span style={{ color: 'red' }}>{regError.password}</span>)}
-          <br />
-
-          <label className='Retype_password' id=''>Retype_Password*</label>
-          <input onChange={regichange} type='password' name='Retype_password' id='password' placeholder='Enter your Retype_password' />
-          {regError.Retype_password && (<span style={{ color: 'red' }}>{regError.Retype_password}</span>)}
-          <br />
-          <label className='First_Name' id=''>First Name*</label>
-          <input onChange={regichange} type='text' name='First_Name' id='firstname' placeholder='Enter your First Name' />
-          {regError.First_Name && (<span style={{ color: 'red' }}>{regError.First_Name}</span>)}
-          <br />
-          <label className='last_Name' id=''>Last Name*</label>
-          <input onChange={regichange} type='text' name='last_Name' id='lastname' placeholder='Enter your last Name' />
-          {regError.last_Name && (<span style={{ color: 'red' }}>{regError.last_Name}</span>)}
-          <br />
-          <label className='phone_number' id=''>phone Number*</label>
-          <input onChange={regichange} type='text' name='phone_number' id='' placeholder='Enter your phone number' />
-          {regError.phone_number && (<span style={{ color: 'red' }}>{regError.phone_number}</span>)}
-          <br />
-          <label className='Address' id=''>Address*</label>
-          <input onChange={regichange} type='text' name='address' id='address' placeholder='Enter your address' />
-          {regError.address && (<span style={{ color: 'red' }}>{regError.address}</span>)}
-          <br />
-          <label className='town' id=''>Town*</label>
-          <input onChange={regichange} type='text' name='town' id='' placeholder='Enter your town' />
-          {regError.town && (<span style={{ color: 'red' }}>{regError.town}</span>)}
-          <br />
-          <label className='Region' id=''>Region*</label>
-          <input onChange={regichange} type='text' name='region' id='' placeholder='Enter your region' />
-          {regError.region && (<span style={{ color: 'red' }}>{regError.region}</span>)}
-          <br />
-          <label className='postcode/zip' id=''>postcode/zip*</label>
-          <input onChange={regichange} type='text' name='postcode_zip' id='' placeholder='Enter your postcode/zip' />
-          {regError.postcode_zip && (<span style={{ color: 'red' }}>{regError.postcode_zip}</span>)}
-          <br />
-          <label className='country' id=''>Country*</label>
-          <select name='country' onChange={regichange} value={regisdata.country}>
-            <option value='country'>united kingdom</option>
-            <option value='female'>india</option>
-            <option value='others'>aemrika</option>
-          </select>
-         
-          <br></br>
-          <input
-            className="btn btn-primary w-100 text-uppercase"
-            type="submit" value={'Register'}
-          />
-        </form>
+    <form onSubmit={handleSub}>
+      <div>
+        <h3>SignUpForm</h3>
+        <label>Name</label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+        />
+        {errors.name && <p>{errors.name}</p>}
       </div>
-    </>
-  )
-}
+      <div>
+        <label>City</label>
+        <select name="city" value={formData.city} onChange={handleChange}>
+          <option value="">--Select City --</option>
+          <option value="suart">surat</option>
+          <option value="baroda">baroda</option>
+          <option value="bhavnger">bhavnger</option>
+        </select>
+        {errors.city && <p>{errors.city}</p>}
+      </div>
+      <div>
+        <label>Gender</label>
+        <select name="gender" value={formData.gender} onChange={handleChange}>
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+        {errors.gender && <p>{errors.gender}</p>}
+      </div>
+      <div>
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+        />
+        {errors.password && <p>{errors.password}</p>}
+      </div>
+      <div>
+        <label>Confirm Password</label>
+        <input
+          type="password"
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+        />
+        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+      </div>
+      <div>
+      <label>Hobbies</label>
 
-export default Register
+            <label>
+              <input
+                type="checkbox"
+                name="hobbies"
+                value="reading"
+                checked={formData.hobbies.includes('reading')}
+                onChange={handleChange}
+              />
+              Reading
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="hobbies"
+                value="sports"
+                checked={formData.hobbies.includes('sports')}
+                onChange={handleChange}
+              />
+              Sports
+            </label>
+          </div>
+      
+           
+         
+      <div>
+        <label>Phone Number</label>
+        <input
+          type="tel"
+          name="phoneNumber"
+          value={formData.phoneNumber}
+          onChange={handleChange}
+        />
+        {errors.phoneNumber && <p>{errors.phoneNumber}</p>}
+      </div>
+      <div>
+        <label>Image Upload</label>
+        <input type="file" name="image" onChange={handleImageChange} />
+        {errors.image && <p>{errors.image}</p>}
+        {preview && <img src={preview} alt="Preview" width="100" />}
+      </div>
+      <button type="submit">Sign Up</button>
+    </form>
+  );
+};
+
+export default SignUpForm;
